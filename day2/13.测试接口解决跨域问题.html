@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <!-- 引入一个jquery库 -->
+</head>
+<body>
+    <button id="btn1">GET</button>
+    <button id="btn2">POST</button>
+    <button id="btn3">DELETE</button>
+    <button id="btn4">JSONP</button>
+</body>
+<script>
+   $(function(){
+       //测试get接口
+       $('#btn1').click(function(){
+           $.ajax({
+               type:'GET',
+               url:'http://127.0.0.1/api/get',
+               data:{
+                   name:'拐子',
+                   age:20
+               },
+               success:function(res){console.log(res);}
+           })
+       })
+       //测试post接口
+       $('#btn2').click(function(){
+           $.ajax({
+               type:'POST',
+               url:'http://127.0.0.1/api/post',
+               data:{
+                   name:'野浩',
+                   age:21
+               },
+               success:function(res){console.log(res);}
+           })
+       })
+
+
+       //为删除按钮绑定点击事件处理函数    预检请求  
+       $('#btn3').click(function(){
+           $.ajax({
+               type:'DELETE',
+               url:'http://127.0.0.1/api/delete',
+               success:function(res){console.log(res);}
+           })
+       })
+
+
+       //  为jsonp 按钮绑定点击事件处理函数
+       $('#btn4').on('click',function(){
+           $.ajax({
+               type:"GET",
+               url:'http://127.0.0.1/api/jsonp',
+               dataType:'jsonp',  //指明发送的是jsonp的数据请求
+               success:function(res){
+                   console.log(res);
+               }
+           })
+       })   //终端运行14接口，然后打开这个html就可以了
+   })
+
+   //如果13 里不写 const cors=require('cors');  app.use(cors);
+   // 就会出现跨域问题，因为这个网页打开是file:///d:/Node.js%E5%9F%BA%E7%A1%80/day2/13.%E6%B5%8B%E8%AF%95%E6%8E%A5%E5%8F%A3%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98.html
+   //  是file协议， 而我们要请求的接口时http协议，存在协议上的不同，所以存在跨域的问题
+
+
+   //3.什么是CORS
+// CORS (Cross Origin Resource Sharing,跨域资源共享)由一系列HTTP响应头组成，这些HTTP响应头决定
+// 浏览器是否阻止前端JS代码跨域获取资源.
+// 浏览器的同源安全策略默认会阻止网页“跨域”获取资源。但如果接口服务器配置了CORS相关的HTTP响应头,
+// 就可以解除浏览器端的跨域访问限制。
+
+//cors 主要在服务器端进行配置，客户端浏览器无需做任何额外的配置，即可请求开启cors的接口
+</script>
+</html>

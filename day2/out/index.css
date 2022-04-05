@@ -1,0 +1,9 @@
+
+			#box4 {
+				width: 200px;
+				height: 200px;
+				background-color: #FFFF00;
+				position: absolute;
+				/*开启绝对定位  不开启的话没法移动*/
+			}
+		

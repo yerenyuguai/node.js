@@ -1,0 +1,65 @@
+cors跨域资源共享
+
+'''三个cors响应头部 '''
+##       Access-Control-Allow-Origin
+响应头中可以携带一个 Access-Control-Allow-Origin字段,语法如下
+Access-Control-Allow-Origin <Origin>    制定了允许访问该资源的外域URL
+     比如  下面的字段只允许来自http://itcast.cn的请求
+      res.setHeader('Access-Control-Allow-Origin','http://itcast.cn')
+或者
+Access-Control-Allow-Origin  *
+  *为通配符，表示允许来自任何域的请求，
+    实例如  res.setHeader('Access-Control-Allow-Origin','*')
+
+
+ ##      Access-Control-Allow-Headers
+默认情况下,CORS仅支持客户端向服务器发送的9个请求头
+Accept、Accept-Language、 Content-Language、 DPR、 Downlink、 Save-Data、 Viewport-Width、 Width 、
+Content Type (值仅限于 text/plain、multipart/form-data、 application/x www form-urlencoded三者之一)
+如果客户端确实需要向服务器发送额外的请求头信息，则需要在服务器端通过Access-Control-Allow-Headers对额外的
+请求头进行声明，否则这次请求会失败
+
+例如
+允许客户端额外向服务器发送Context-Type请求头和 X-Custom-Header(额外) 请求头
+   多个请求头之间用英文逗号,隔开
+   res.setHeader('Access-Control-Allow-Headers','Context-Type,X-Custom-Header')
+
+
+
+##  Access-Control-Allow-Methods
+默认情况下，CORS只支持客户端发起GET,POST,HEAD请求
+如果客户端希望通过PUT,DELETE等方式请求服务器的资源，则需要在服务器端，通过Access-Control-Allow-Methods
+来指明实际请求所允许使用的HTTP方法
+例如
+只允许POST，GET,DELETE,HEAD请求方法
+res.setHeader('Access-Control-Allow-Methods','POST,GET,DELETE,HEAD');
+允许所有的HTTP请求方法
+res.setHeader('Access-Control-Allow-Methods','*')
+
+
+'''COR请求的分类'''  ⭐⭐⭐⭐⭐
+客户端在请求CORS接口时，根据请求方式和请求头的不同，可以将CORS的请求分为两类 分别是
+#简单请求
+   同时满足下面这两个条件{
+     1.请求方式是GET,POST,HEAD 三者之一
+     2.HTTP头部信息不超过以下9种字段(也不能包含自定义头部)
+     Accept、Accept-Language、 Content-Language、 DPR、 Downlink、 Save-Data、 Viewport-Width、 Width 、
+Content Type (值仅限于 text/plain、multipart/form-data、 application/x www form-urlencoded三者之一)
+   }
+#预检请求
+  满足下面任意一个条件的请求，都可以叫做预检请求
+
+  请求方式为  GET,POST,HEAD之外的请求Methods类型
+或者
+  请求头中包含自定义头部字段
+或者
+  向服务器发送了application/json格式的数据时  ⭐⭐⭐⭐⭐
+
+在浏览器与服务器正式通信之前，浏览器会先发送OPTION类型的请求进行预检，以获知服务器是否允许该实际请求，所以这一
+次的OPTION请求称为"预检请求" 。服务器成功响应预检请求后，才会发送真正的请求，并且携带真实数据。 ⭐⭐⭐⭐
+
+
+#  简单请求和预检请求之间的区别
+简单请求  客户端与服务器之间只会发生一次请求
+预检请求  客户端与服务器之间会发生两次请求,OPTION预检请求成功之后，才会发起真正的请求  
+13  和apirouter有案例
